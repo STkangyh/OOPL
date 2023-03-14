@@ -2,26 +2,22 @@ import java.util.Scanner;
 
 public class practice1 {
     public static void main(String[] args) {
-        while(true){
-            Scanner ip = new Scanner(System.in);
-            System.out.print("Enter the number of the lines: ");
-            int rows = ip.nextInt();
-            System.out.println("");
-            if(rows<10) {
-                System.out.println("Number should be greater than 10");
-                continue;
-            }
-            else
-                for(int i=1;i<=rows;i++){
-                    for(int space=1;space<=(rows-i)*2;space++)
-                        System.out.print(" ");
-                    for(int k=i;k>=1;k--)
-                        System.out.print(" "+k);
-                    for (int l=2;l<=i;l++)
-                        System.out.print(" "+l);
-                    System.out.println();
-                }
-                break;
-        }
+        System.out.println("Enter a number");
+
+        Scanner sc = new Scanner(System.in);
+        int number = sc.nextInt();
+
+        if(isPalindrome(number))
+            System.out.println("Number you entered is a palindrome");
+        else System.out.println("Number you entered is not a palindrome");
+    }
+    public static int reverse(int number){ //Return the reversal of an integer, i.e. reverse(456) return 654
+        String rev = "" + number;
+        StringBuilder sb = new StringBuilder(rev);
+        sb.reverse();
+        return Integer.parseInt(sb.toString());
+    }
+    public static boolean isPalindrome(int number){ //Return true if number is a palindrome
+        return number == reverse(number);
     }
 }
