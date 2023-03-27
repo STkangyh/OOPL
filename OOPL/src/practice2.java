@@ -1,31 +1,31 @@
+import java.util.*;
+
 public class practice2 {
     public static void main(String[] args) {
-        int num = 2;
-        int count = 0;
-        while (count<=120){
-            if(isEmirp(num)) {
-                System.out.print(num + " ");
-                ++count;
-                ++num;
-                if(count%10==0)
-                    System.out.println(" ");
+        Scanner sc1 = new Scanner(System.in);
+        int[][] employee=new int[7][8];
+        int[] time=new int[8];
+
+        System.out.println("           Su M T W Th F Sa");
+        for (int i=0;i<8;i++){
+            System.out.print("Employee "+i+" ");
+            for (int j=0;j<7;j++){
+                employee[j][i]= sc1.nextInt();
+                time[i]+=employee[j][i];
             }
-            else ++num;
         }
-    }
-    public static boolean isEmirp(int number){
-        return isPrime(number) && !practice1.isPalindrome(number) && isPrime(practice1.reverse(number));
-    }
-    public static boolean isPrime(int number){
-        int i=2;
-        boolean b = false;
-        while(i<=number/2){
-            if(number%i==0) {
-                b=true;
-                break;
-            }
-            else ++i;
+
+        ArrayList temp = new ArrayList<>();
+        for(int i=0;i<8;i++){
+            temp.add(time[i]);
         }
-        return !b;
+
+
+        for(int i = time.length-1; i>=0; i--){
+            Arrays.sort(time); //오름차순으로 정렬
+
+            String x = "Employee " + temp.indexOf(time[i]) + ": " + time[i];
+            System.out.println(x);
+        }
     }
 }

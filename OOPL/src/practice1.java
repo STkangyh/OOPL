@@ -2,22 +2,40 @@ import java.util.Scanner;
 
 public class practice1 {
     public static void main(String[] args) {
-        System.out.println("Enter a number");
-
         Scanner sc = new Scanner(System.in);
-        int number = sc.nextInt();
+        System.out.print("Enter the number of elements: ");
+        int num = sc.nextInt();
 
-        if(isPalindrome(number))
-            System.out.println("Number you entered is a palindrome");
-        else System.out.println("Number you entered is not a palindrome");
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter a list: ");
+        int[] list = new int[num];
+        for(int i=0;i<num;i++){
+            list[i]=scanner.nextInt();
+        }
+
+        partitions(list);
+        System.out.print("After the partition, the list is");
+        for (int i : list) {
+            System.out.print(" " + i);
+        }
     }
-    public static int reverse(int number){ //Return the reversal of an integer, i.e. reverse(456) return 654
-        String rev = "" + number;
-        StringBuilder sb = new StringBuilder(rev);
-        sb.reverse();
-        return Integer.parseInt(sb.toString());
-    }
-    public static boolean isPalindrome(int number){ //Return true if number is a palindrome
-        return number == reverse(number);
+    public static int partitions(int[] list) {
+        int pivot=0;
+        for (int i=1;i<list.length;i++) {
+            for (int j = 1; j < list.length; j++) {
+                if (list[j] > list[list.length - i]) {
+                    int temp = list[list.length - i];
+                    list[list.length - i] = list[j];
+                    list[j] = temp;
+                }
+            }
+            if (i == list.length - i){
+                int temp=list[pivot];
+                list[pivot]=list[i];
+                list[i]=list[pivot];
+            }
+        }
+        return pivot;
     }
 }
+
