@@ -2,40 +2,35 @@ import java.util.Scanner;
 
 public class practice1 {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Enter the number of elements: ");
-        int num = sc.nextInt();
-
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter a list: ");
-        int[] list = new int[num];
-        for(int i=0;i<num;i++){
-            list[i]=scanner.nextInt();
-        }
-
-        partitions(list);
-        System.out.print("After the partition, the list is");
-        for (int i : list) {
-            System.out.print(" " + i);
-        }
+        LinearEquation linearEquation = new LinearEquation();
     }
-    public static int partitions(int[] list) {
-        int pivot=0;
-        for (int i=1;i<list.length;i++) {
-            for (int j = 1; j < list.length; j++) {
-                if (list[j] > list[list.length - i]) {
-                    int temp = list[list.length - i];
-                    list[list.length - i] = list[j];
-                    list[j] = temp;
-                }
-            }
-            if (i == list.length - i){
-                int temp=list[pivot];
-                list[pivot]=list[i];
-                list[i]=list[pivot];
-            }
+    static class LinearEquation{
+        private int a,b,c,d,e,f;
+        public LinearEquation(){
+            System.out.println("Enter a,b,c,d,e,f");
+            a=getter();
+            b=getter();
+            c=getter();
+            d=getter();
+            e=getter();
+            f=getter();
+            if (!isSolvable())
+                System.out.println("The equation has no solution");
+            else System.out.println("x is "+getX()+" and y is "+getY());
         }
-        return pivot;
+        public int getter(){
+            Scanner scanner = new Scanner(System.in);
+            return scanner.nextInt();
+        }
+        public boolean isSolvable() {
+            return a * d - b * c != 0;
+        }
+        public double getX(){
+            return (e*d-b*f)/(a*d-b*c);
+        }
+        public double getY(){
+            return (a*f-e*c)/(a*d-b*c);
+        }
     }
 }
 
