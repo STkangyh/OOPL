@@ -1,37 +1,42 @@
-import java.util.*;
 
 public class practice2 {
     public static void main(String[] args) {
-        LinearEquation linearEquation = new LinearEquation();
+        Queue queue = new Queue();
+        for (int i = 1; i <=20; i++) {
+            queue.enqueue(i);
+        }
+        while (!queue.empty()) {
+            System.out.print(queue.dequeue() + " ");
+        }
     }
-    static class LinearEquation{
-        private int a,b,c,d,e,f;
-        public LinearEquation(){
-            System.out.println("Enter x1, y1, x2, y2, x3, y3, x4, y4");
-            int[] r = new int[8];
-            for (int i = 0; i < 8; i++) {
-                r[i]=getter();
+    public static class Queue{
+        private int[] element;
+        private int size=0;
+        public Queue(){
+            element = new int[8];
+        }
+        public void enqueue(int v){
+            if (size>=getSize()){
+                int[] temp = new int[element.length*2];
+                System.arraycopy(element,0,temp,0,element.length);
+                element=temp;
             }
-            a=r[1]-r[3];
-            b=r[0]-r[2];
-            c=r[7]-r[5];
-            d=r[6]-r[4];
-            e=a*r[0]-b*r[1];
-            f=c*r[4]-d*r[5];
-            if (!isSolvable())
-                System.out.println("The equation has no solution");
-            else System.out.println("x is "+getX()+" and y is "+getY());
+            element[size++]=v;
         }
-        public int getter(){
-            Scanner scanner = new Scanner(System.in);
-            return scanner.nextInt();
+        public int dequeue(){
+            int temp;
+            for(int i=0;i<size;i++){
+                temp=element[i];
+                element[i]=element[i+1];
+                element[i+1]=temp;
+            }
+            return element[size-1];
         }
-        public boolean isSolvable() {
-            return a * d - b * c != 0;
+        public boolean empty(){
+            return element[0]==element[element.length-1];
         }
-        public double getX(){ return (a*d-b*c); }
-        public double getY(){
-            return (a*f-e*c)/(b*c-a*d);
+        public int getSize(){
+            return element.length;
         }
     }
 }
