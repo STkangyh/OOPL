@@ -1,68 +1,123 @@
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class practice1 {
     public static void main(String[] args) {
-        Course course1 = new Course("course1");
-        System.out.print("Number of students in course 1: ");
-        Scanner sc = new Scanner(System.in);
-        int num = sc.nextInt();
-        for (int i = 0; i<num; i++){
-            Scanner sc1 = new Scanner(System.in);
-            course1.addStudent(sc1.next());
+        Account1 account = new Account1("George", 1122, 1000);
+        Account1.Transaction transaction = new Account1.Transaction();
+        account.setAnnualInterestRate(1.65);
+        account.deposit(30,0);
+        account.deposit(40,1);
+        account.deposit(50,2);
+        account.withdraw(5,3);
+        account.withdraw(4,4);
+        account.withdraw(2,5);
+        System.out.println("Name: George");
+        System.out.println("Annual interest rate: "+account.getAnnualInterestRate());
+        System.out.println("Balance: "+account.getBalance());
+        System.out.println("Date"+"\t\t\t\t\t\t\t\t"+"type"+"\t"+"Amount"+"\t\t"+"Balance");
+        for (int i = 0; i < 6; i++) {
+            System.out.println(account.transactions[i]);
         }
-        System.out.println(course1.getStudents());
-        System.out.println(course1.getNumberOfStudents());
-        course1.dropStudent("Peter");
-        System.out.println("Number of students in course1 after drop Anne: "+course1.getNumberOfStudents());
-        System.out.println(course1.getStudents());
-        course1.clear();
-        System.out.println("Number of students in course1 after clear: "+course1.getNumberOfStudents());
-        System.out.println(course1.getStudents());
-        System.out.println(course1.getNumberOfStudents());
     }
-    public static class Course {
-        private String courseName;
-        private String[] students = new String[10];
-        private int numberOfStudents;
+    public static class Account {
+        private int id;
+        double balance=0;
+        private double annualInterestRate;
+        protected java.util.Date dateCreated;
 
-        public Course(String courseName) {
-            this.courseName = courseName;
+        public Account() {
+            dateCreated = new java.util.Date();
         }
 
-        public void addStudent(String student) {
-            if(students.length<=numberOfStudents){
-                String[] temp = new String[students.length*2];
-                System.arraycopy(students, 0, temp, 0, students.length);
-                students = temp;
+        public Account(int newId, double newBalance) {
+            id = newId;
+            balance = newBalance;
+            dateCreated = new java.util.Date();
+        }
+
+        public int getId() {
+            return this.id;
+        }
+
+        public double getBalance() {
+            return balance;
+        }
+
+        public double getAnnualInterestRate() {
+            return annualInterestRate;
+        }
+
+        public void setId(int newId) {
+            id = newId;
+        }
+
+        public void setBalance(double newBalance) {
+            balance = newBalance;
+        }
+
+        public void setAnnualInterestRate(double newAnnualInterestRate) {
+            annualInterestRate = newAnnualInterestRate;
+        }
+
+        public double getMonthlyInterest() {
+            return balance * (annualInterestRate / 1200);
+        }
+
+        public java.util.Date getDateCreated() {
+            return dateCreated;
+        }
+
+        public void withdraw(double amount) {
+            balance -= amount;
+        }
+
+        public void deposit(double amount) {
+            balance += amount;
+        }
+    }
+
+    public static class Account1 extends Account {
+        private String name;
+
+        public static String[] transactions = new String[6];
+
+        Account1(String name, int id, double balance) {
+            this.name = name;
+            setId(id);
+            setBalance(balance);
+        }
+        public void withdraw(double amount,int i) {
+            balance-=amount;
+            Transaction transaction = new Transaction('W', amount, balance);
+            Transaction.add(transaction.description,i);
+        }
+
+        public void deposit(double amount,int i) {
+            balance+=amount;
+            Transaction transaction = new Transaction('D', amount, balance);
+            Transaction.add(transaction.description,i);
+        }
+
+        public static class Transaction{
+            //private static java.util.Date date;
+            private static char type;
+            private static double amount;
+            private static double balance;
+            private String description;
+            Transaction(){
+                //date=new java.util.Date();
             }
-            students[numberOfStudents] = student;
-            numberOfStudents++;
-        }
-
-        public int getStudents() {
-            for (int i = 0; i<numberOfStudents; i++){
-                System.out.print(students[i]+", ");
+            Transaction(char type, double amount, double balance){
+                this.type = type;
+                this.amount = amount;
+                this.balance = balance;
             }
-            return 0;
-        }
-
-        public int getNumberOfStudents() {
-            return numberOfStudents;
-        }
-
-        public String getCourseName() {
-            return courseName;
-        }
-
-        public void dropStudent(String student) {
-            // Left as an exercise in Exercise 10.9
-            numberOfStudents--;
-        }
-        public void clear(){
-            students=null;
-            numberOfStudents=0;
-            courseName=null;
+            public static void add(String description, int i){
+                Date date = new Date();
+                description = date.toString()+"\t"+type+"\t\t"+amount+"\t\t"+balance;
+                transactions[i]+=description;
+            }
         }
     }
 }
-
