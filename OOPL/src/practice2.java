@@ -1,57 +1,69 @@
-import java.io.*;
-
+import java.util.Scanner;
 public class practice2 {
-    public static void main(String[] args) throws IOException {
-        practice1.GeometricObjectComparable[] objects = {
-                new Square(2), new practice1.Circle(5), new Square(5), new practice1.Rectangle(3, 4), new Square(4.5)
-        };
-        for (int i=0; i<5; i++){
-            System.out.println("Area is "+objects[i].getArea());
-            if (!objects[i].isFilled())
-                objects[i].howToColor();
+    public static void main(String[] args) {
+        int n;
+        int m;
+        int v;
+        Scanner sc = new Scanner(System.in);
+        n = sc.nextInt();
+        m = sc.nextInt();
+        v = sc.nextInt();
+        Queue queue = new Queue(n,v);
+        int[][] array = new int[n][n];
+
+        for (int i=0; i<m; i++){    // 간선 배열에 값을 넣는다.
+            int a = sc.nextInt()-1;
+            int b = sc.nextInt()-1;
+            array[a][b]=1;
+            array[b][a]=1;
+        }
+        /*for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                System.out.print(array[i][j]+" ");
+            }
+            System.out.println();
+        }
+        System.out.println();*/
+
+        for (int i=0;i<n;i++){
+            for (int j=0; j<n; j++){
+                if (array[i][j]==1) {
+                    queue.addQueue(j+1);
+                    array[i][j]=0; array[j][i]=0;   // 이미 접근했던 array 데이터 접근을 막기 위해 값 재정의
+                }
+                //System.out.print(queue.data[j]+" ");
+            }
+            //System.out.println();
+        }
+        //System.out.println();
+
+        for (int i = 0; i < n; i++) {
+            queue.deleteQueue();
         }
     }
 
-    public static interface Colorable {
-        public abstract void howToColor();
-    }
-
-    public static class Square extends practice1.GeometricObjectComparable implements Colorable {
-        protected double a;
-        public Square(double a){
-            this.a=a;
-            setFilled(false);
+    public static class Queue{
+        private final int[] data;
+        private int front=0;
+        private final int dataMax;
+        public Queue(int n, int v){
+            data=new int[n*n];
+            data[0]=v;
+            front++;
+            dataMax=n-1;
         }
-        public double getA() {
-            return a;
+        public void addQueue(int e){
+            data[front]=e;
+            if (front<=dataMax)
+                front++;
+            else
+                front--;
         }
-
-        @Override
-        public double getArea() {
-            return a*a;
-        }
-
-        public void setA(double a) {
-            this.a = a;
-        }
-
-        @Override
-        public double getPerimeter() {
-            return 4*a;
-        }
-
-        public void howToColor() {
-            System.out.println("Color all four sides");
-        }
-
-        @Override
-        public void setColor(String color) {
-            super.setColor(color);
-        }
-
-        @Override
-        public String getColor() {
-            return super.getColor();
+        public void deleteQueue(){   // k는 값을 리턴할 배열의 개수
+            System.out.print(data[0]+" ");
+            for (int i=0;i< data.length-1;i++){
+                data[i]=data[i+1];
+            }
         }
     }
 }
